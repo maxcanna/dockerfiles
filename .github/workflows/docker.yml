@@ -22,16 +22,19 @@ jobs:
           docker buildx build \
             --platform ${{ steps.buildx.outputs.platforms }} \
             --output "type=image,push=false" \
+            --tag maxcanna/ffmpeg \
             --file ./ffmpeg/Dockerfile ./ffmpeg
       - name: Build subliminal
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
             --output "type=image,push=false" \
+            --tag maxcanna/subliminal \
             --file ./subliminal/Dockerfile ./subliminal
       - name: Build caddy
         run: |
           docker buildx build \
             --platform linux/arm/v6 \
             --output "type=image,push=false" \
+            --tag maxcanna/caddy
             --file ./caddy/Dockerfile ./caddy
