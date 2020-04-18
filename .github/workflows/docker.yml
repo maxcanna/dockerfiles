@@ -13,14 +13,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Set up Docker Buildx
-        id: buildx
         uses: crazy-max/ghaction-docker-buildx@v1
         with:
           version: latest
       - name: Build ffmpeg
         run: |
           docker buildx build \
-            --platform ${{ steps.buildx.outputs.platforms }} \
+            --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
             --output "type=image,push=false" \
             --tag maxcanna/ffmpeg \
             --file ./ffmpeg/Dockerfile ./ffmpeg
