@@ -26,12 +26,12 @@ jobs:
       - name: Build subliminal
         run: |
           docker buildx build \
-            --platform ${{ steps.buildx.outputs.platforms }} \
+            --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
             --output "type=image,push=false" \
             --file ./subliminal/Dockerfile ./subliminal
       - name: Build caddy
         run: |
           docker buildx build \
-            --platform ${{ steps.buildx.outputs.platforms }} \
+            --platform linux/arm/v6 \
             --output "type=image,push=false" \
             --file ./caddy/Dockerfile ./caddy
