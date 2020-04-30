@@ -3,5 +3,5 @@ LABEL maintainer Massimiliano Cannarozzo <massi@massi.dev>
 
 RUN apk add --no-cache --update minidlna
 
-ENTRYPOINT ["minidlna"]
+ENTRYPOINT ["minidlnad"]
 CMD ["-h"]
