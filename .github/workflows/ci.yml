@@ -44,11 +44,19 @@ jobs:
             --tag maxcanna/subliminal:latest \
             --tag maxcanna/subliminal:$SUBLIMINAL_VERSION \
             --file ./subliminal/Dockerfile ./subliminal
+      - name: Detect caddy version
+        run: |
+          docker build -t maxcanna/caddy:version -f ./caddy/Dockerfile ./caddy
+          export CADDY_VERSION=$(docker run --rm maxcanna/caddy:version version | cut -d ' ' -f 1)
+          echo Detected version: $CADDY_VERSION
+          echo "::set-env name=CADDY_VERSION::$CADDY_VERSION"
       - name: Build caddy
         run: |
           docker buildx build \
             --platform linux/arm/v6 \
             --output "type=image,push=false" \
+            --tag maxcanna/caddy:latest \
+            --tag maxcanna/caddy:$CADDY_VERSION \
             --file ./caddy/Dockerfile ./caddy
       - name: Build transmission
         run: |
