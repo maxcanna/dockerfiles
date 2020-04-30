@@ -58,11 +58,19 @@ jobs:
             --tag maxcanna/caddy:latest \
             --tag maxcanna/caddy:$CADDY_VERSION \
             --file ./caddy/Dockerfile ./caddy
+      - name: Detect transmission version
+        run: |
+          docker build -t maxcanna/transmission:version -f ./transmission/Dockerfile ./transmission
+          export TRANSMISSION_VERSION=$(docker run --rm maxcanna/transmission:version --version 2>&1 | xargs | cut -d ' ' -f 2)
+          echo Detected version: $TRANSMISSION_VERSION
+          echo "::set-env name=TRANSMISSION_VERSION::$TRANSMISSION_VERSION"
       - name: Build transmission
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
             --output "type=image,push=false" \
+            --tag maxcanna/transmission:latest \
+            --tag maxcanna/transmission:$TRANSMISSION_VERSION \
             --file ./transmission/Dockerfile ./transmission
       - name: Build minidlna
         run: |
