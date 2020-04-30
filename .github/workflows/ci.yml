@@ -30,11 +30,19 @@ jobs:
             --tag maxcanna/ffmpeg:latest \
             --tag maxcanna/ffmpeg:$FFMPEG_VERSION \
             --file ./ffmpeg/Dockerfile ./ffmpeg
+      - name: Detect subliminal version
+        run: |
+          docker build -t maxcanna/subliminal:version -f ./subliminal/Dockerfile ./subliminal
+          export SUBLIMINAL_VERSION=$(docker run --rm maxcanna/subliminal:version --version | cut -d ' ' -f 3)
+          echo Detected version: $SUBLIMINAL_VERSION
+          echo "::set-env name=SUBLIMINAL_VERSION::$SUBLIMINAL_VERSION"
       - name: Build subliminal
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
             --output "type=image,push=false" \
+            --tag maxcanna/subliminal:latest \
+            --tag maxcanna/subliminal:$SUBLIMINAL_VERSION \
             --file ./subliminal/Dockerfile ./subliminal
       - name: Build caddy
         run: |
