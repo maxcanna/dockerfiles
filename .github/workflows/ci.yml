@@ -72,9 +72,17 @@ jobs:
             --tag maxcanna/transmission:latest \
             --tag maxcanna/transmission:$TRANSMISSION_VERSION \
             --file ./transmission/Dockerfile ./transmission
+      - name: Detect minidlna version
+        run: |
+          docker build -t maxcanna/minidlna:version -f ./minidlna/Dockerfile ./minidlna
+          export MINIDLNA_VERSION=$(docker run --rm maxcanna/minidlna:version -V | cut -d ' ' -f 2)
+          echo Detected version: $MINIDLNA_VERSION
+          echo "::set-env name=MINIDLNA_VERSION::$MINIDLNA_VERSION"
       - name: Build minidlna
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
             --output "type=image,push=false" \
+            --tag maxcanna/minidlna:latest \
+            --tag maxcanna/minidlna:$MINIDLNA_VERSION \
             --file ./minidlna/Dockerfile ./minidlna
