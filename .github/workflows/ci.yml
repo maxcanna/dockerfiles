@@ -1,13 +1,17 @@
-name: CI
+name: build
 
 on:
-  pull_request:
-    branches: master
+  push:
 
 jobs:
   buildx:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env vars
+        run: |
+          export DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false")
+          echo Will push image: $DOCKER_PUSH
+          echo "::set-env name=DOCKER_PUSH::$DOCKER_PUSH"
       - name: Checkout
         uses: actions/checkout@v1
       - name: Set up Docker Buildx
@@ -26,7 +30,7 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=false" \
+            --output "type=image,push=$DOCKER_PUSH" \
             --tag maxcanna/ffmpeg:latest \
             --tag maxcanna/ffmpeg:$FFMPEG_VERSION \
             --file ./ffmpeg/Dockerfile ./ffmpeg
@@ -40,7 +44,7 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=false" \
+            --output "type=image,push=$DOCKER_PUSH" \
             --tag maxcanna/subliminal:latest \
             --tag maxcanna/subliminal:$SUBLIMINAL_VERSION \
             --file ./subliminal/Dockerfile ./subliminal
@@ -54,7 +58,7 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/arm/v6 \
-            --output "type=image,push=false" \
+            --output "type=image,push=$DOCKER_PUSH" \
             --tag maxcanna/caddy:latest \
             --tag maxcanna/caddy:$CADDY_VERSION \
             --file ./caddy/Dockerfile ./caddy
@@ -68,7 +72,7 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=false" \
+            --output "type=image,push=$DOCKER_PUSH" \
             --tag maxcanna/transmission:latest \
             --tag maxcanna/transmission:$TRANSMISSION_VERSION \
             --file ./transmission/Dockerfile ./transmission
@@ -82,7 +86,7 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=false" \
+            --output "type=image,push=$DOCKER_PUSH" \
             --tag maxcanna/minidlna:latest \
             --tag maxcanna/minidlna:$MINIDLNA_VERSION \
             --file ./minidlna/Dockerfile ./minidlna
