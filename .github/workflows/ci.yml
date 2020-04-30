@@ -1,13 +1,17 @@
-name: CI
+name: build
 
 on:
-  pull_request:
-    branches: master
+  push:
 
 jobs:
   buildx:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env vars
+        run: |
+          export DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false")
+          echo Will push image: $DOCKER_PUSH
+          echo "::set-env name=DOCKER_PUSH::$DOCKER_PUSH"
       - name: Checkout
         uses: actions/checkout@v1
       - name: Set up Docker Buildx
@@ -16,33 +20,73 @@ jobs:
           version: latest
       - name: Docker login
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      - name: Detect ffmpeg version
+        run: |
+          docker build -t maxcanna/ffmpeg:version -f ./ffmpeg/Dockerfile ./ffmpeg
+          export FFMPEG_VERSION=$(docker run --rm maxcanna/ffmpeg:version -version | xargs | cut -d ' ' -f 3)
+          echo Detected version: $FFMPEG_VERSION
+          echo "::set-env name=FFMPEG_VERSION::$FFMPEG_VERSION"
       - name: Build ffmpeg
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=false" \
+            --output "type=image,push=$DOCKER_PUSH" \
+            --tag maxcanna/ffmpeg:latest \
+            --tag maxcanna/ffmpeg:$FFMPEG_VERSION \
             --file ./ffmpeg/Dockerfile ./ffmpeg
+      - name: Detect subliminal version
+        run: |
+          docker build -t maxcanna/subliminal:version -f ./subliminal/Dockerfile ./subliminal
+          export SUBLIMINAL_VERSION=$(docker run --rm maxcanna/subliminal:version --version | cut -d ' ' -f 3)
+          echo Detected version: $SUBLIMINAL_VERSION
+          echo "::set-env name=SUBLIMINAL_VERSION::$SUBLIMINAL_VERSION"
       - name: Build subliminal
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=false" \
+            --output "type=image,push=$DOCKER_PUSH" \
+            --tag maxcanna/subliminal:latest \
+            --tag maxcanna/subliminal:$SUBLIMINAL_VERSION \
             --file ./subliminal/Dockerfile ./subliminal
+      - name: Detect caddy version
+        run: |
+          docker build -t maxcanna/caddy:version -f ./caddy/Dockerfile ./caddy
+          export CADDY_VERSION=$(docker run --rm maxcanna/caddy:version version | cut -d ' ' -f 1)
+          echo Detected version: $CADDY_VERSION
+          echo "::set-env name=CADDY_VERSION::$CADDY_VERSION"
       - name: Build caddy
         run: |
           docker buildx build \
             --platform linux/arm/v6 \
-            --output "type=image,push=false" \
+            --output "type=image,push=$DOCKER_PUSH" \
+            --tag maxcanna/caddy:latest \
+            --tag maxcanna/caddy:$CADDY_VERSION \
             --file ./caddy/Dockerfile ./caddy
+      - name: Detect transmission version
+        run: |
+          docker build -t maxcanna/transmission:version -f ./transmission/Dockerfile ./transmission
+          export TRANSMISSION_VERSION=$(docker run --rm maxcanna/transmission:version --version 2>&1 | xargs | cut -d ' ' -f 2)
+          echo Detected version: $TRANSMISSION_VERSION
+          echo "::set-env name=TRANSMISSION_VERSION::$TRANSMISSION_VERSION"
       - name: Build transmission
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=false" \
+            --output "type=image,push=$DOCKER_PUSH" \
+            --tag maxcanna/transmission:latest \
+            --tag maxcanna/transmission:$TRANSMISSION_VERSION \
             --file ./transmission/Dockerfile ./transmission
+      - name: Detect minidlna version
+        run: |
+          docker build -t maxcanna/minidlna:version -f ./minidlna/Dockerfile ./minidlna
+          export MINIDLNA_VERSION=$(docker run --rm maxcanna/minidlna:version -V | cut -d ' ' -f 2)
+          echo Detected version: $MINIDLNA_VERSION
+          echo "::set-env name=MINIDLNA_VERSION::$MINIDLNA_VERSION"
       - name: Build minidlna
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=false" \
+            --output "type=image,push=$DOCKER_PUSH" \
+            --tag maxcanna/minidlna:latest \
+            --tag maxcanna/minidlna:$MINIDLNA_VERSION \
             --file ./minidlna/Dockerfile ./minidlna
