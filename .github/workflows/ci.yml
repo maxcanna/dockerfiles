@@ -50,14 +50,14 @@ jobs:
             --file ./subliminal/Dockerfile ./subliminal
       - name: Detect caddy version
         run: |
-          docker build -t maxcanna/caddy:version -f ./caddy/Dockerfile ./caddy
+          docker build --build-arg TARGETOS=linux --build-arg TARGETARCH=amd64 -t maxcanna/caddy:version -f ./caddy/Dockerfile ./caddy
           export CADDY_VERSION=$(docker run --rm maxcanna/caddy:version version | cut -d ' ' -f 1)
           echo Detected version: $CADDY_VERSION
           echo "::set-env name=CADDY_VERSION::$CADDY_VERSION"
       - name: Build caddy
         run: |
           docker buildx build \
-            --platform linux/arm/v6 \
+            --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
             --output "type=image,push=$DOCKER_PUSH" \
             --tag maxcanna/caddy:latest \
             --tag maxcanna/caddy:$CADDY_VERSION \
