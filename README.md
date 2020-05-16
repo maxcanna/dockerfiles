@@ -1,7 +1,7 @@
 # dockerfiles
 A bunch of Dockerfiles
 
-In no particular order:
+Available images (check the exact version on Docker Hub):
 
 - [ffmpeg](https://hub.docker.com/repository/docker/maxcanna/ffmpeg) (latest version on `latest` `alpine`)
 
