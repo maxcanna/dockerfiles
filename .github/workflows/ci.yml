@@ -9,9 +9,7 @@ jobs:
     steps:
       - name: Set env vars
         run: |
-          export DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false")
-          echo Will push image: $DOCKER_PUSH
-          echo "::set-env name=DOCKER_PUSH::$DOCKER_PUSH"
+          echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v1
       - name: Set up Docker Buildx
@@ -23,9 +21,7 @@ jobs:
       - name: Detect ffmpeg version
         run: |
           docker build -t maxcanna/ffmpeg:version -f ./ffmpeg/Dockerfile ./ffmpeg
-          export FFMPEG_VERSION=$(docker run --rm maxcanna/ffmpeg:version -version | xargs | cut -d ' ' -f 3)
-          echo Detected version: $FFMPEG_VERSION
-          echo "::set-env name=FFMPEG_VERSION::$FFMPEG_VERSION"
+          echo FFMPEG_VERSION=$(docker run --rm maxcanna/ffmpeg:version -version | xargs | cut -d ' ' -f 3) >> $GITHUB_ENV
       - name: Build ffmpeg
         run: |
           docker buildx build \
@@ -39,9 +35,7 @@ jobs:
     steps:
       - name: Set env vars
         run: |
-          export DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false")
-          echo Will push image: $DOCKER_PUSH
-          echo "::set-env name=DOCKER_PUSH::$DOCKER_PUSH"
+          echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v1
       - name: Set up Docker Buildx
@@ -53,9 +47,7 @@ jobs:
       - name: Detect subliminal version
         run: |
           docker build -t maxcanna/subliminal:version -f ./subliminal/Dockerfile ./subliminal
-          export SUBLIMINAL_VERSION=$(docker run --rm maxcanna/subliminal:version --version | cut -d ' ' -f 3)
-          echo Detected version: $SUBLIMINAL_VERSION
-          echo "::set-env name=SUBLIMINAL_VERSION::$SUBLIMINAL_VERSION"
+          echo SUBLIMINAL_VERSION=$(docker run --rm maxcanna/subliminal:version --version | cut -d ' ' -f 3) >> $GITHUB_ENV
       - name: Build subliminal
         run: |
           docker buildx build \
@@ -69,9 +61,7 @@ jobs:
     steps:
       - name: Set env vars
         run: |
-          export DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false")
-          echo Will push image: $DOCKER_PUSH
-          echo "::set-env name=DOCKER_PUSH::$DOCKER_PUSH"
+          echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v1
       - name: Set up Docker Buildx
@@ -83,9 +73,7 @@ jobs:
       - name: Detect caddy version
         run: |
           docker build --build-arg TARGETOS=linux --build-arg TARGETARCH=amd64 -t maxcanna/caddy:version -f ./caddy/Dockerfile ./caddy
-          export CADDY_VERSION=$(docker run --rm maxcanna/caddy:version version | cut -d ' ' -f 1)
-          echo Detected version: $CADDY_VERSION
-          echo "::set-env name=CADDY_VERSION::$CADDY_VERSION"
+          echo CADDY_VERSION=$(docker run --rm maxcanna/caddy:version version | cut -d ' ' -f 1) >> $GITHUB_ENV
       - name: Build caddy
         run: |
           docker buildx build \
@@ -99,9 +87,7 @@ jobs:
     steps:
       - name: Set env vars
         run: |
-          export DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false")
-          echo Will push image: $DOCKER_PUSH
-          echo "::set-env name=DOCKER_PUSH::$DOCKER_PUSH"
+          echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v1
       - name: Set up Docker Buildx
@@ -113,9 +99,7 @@ jobs:
       - name: Detect transmission version
         run: |
           docker build -t maxcanna/transmission:version -f ./transmission/Dockerfile ./transmission
-          export TRANSMISSION_VERSION=$(docker run --rm maxcanna/transmission:version --version 2>&1 | xargs | cut -d ' ' -f 2)
-          echo Detected version: $TRANSMISSION_VERSION
-          echo "::set-env name=TRANSMISSION_VERSION::$TRANSMISSION_VERSION"
+          echo TRANSMISSION_VERSION=$(docker run --rm maxcanna/transmission:version --version 2>&1 | xargs | cut -d ' ' -f 2) >> $GITHUB_ENV
       - name: Build transmission
         run: |
           docker buildx build \
@@ -129,9 +113,7 @@ jobs:
     steps:
       - name: Set env vars
         run: |
-          export DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false")
-          echo Will push image: $DOCKER_PUSH
-          echo "::set-env name=DOCKER_PUSH::$DOCKER_PUSH"
+          echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v1
       - name: Set up Docker Buildx
@@ -143,9 +125,7 @@ jobs:
       - name: Detect minidlna version
         run: |
           docker build -t maxcanna/minidlna:version -f ./minidlna/Dockerfile ./minidlna
-          export MINIDLNA_VERSION=$(docker run --rm maxcanna/minidlna:version -V | cut -d ' ' -f 2)
-          echo Detected version: $MINIDLNA_VERSION
-          echo "::set-env name=MINIDLNA_VERSION::$MINIDLNA_VERSION"
+          echo MINIDLNA_VERSION=$(docker run --rm maxcanna/minidlna:version -V | cut -d ' ' -f 2) >> $GITHUB_ENV
       - name: Build minidlna
         run: |
           docker buildx build \
@@ -154,3 +134,4 @@ jobs:
             --tag maxcanna/minidlna:latest \
             --tag maxcanna/minidlna:$MINIDLNA_VERSION \
             --file ./minidlna/Dockerfile ./minidlna
+
