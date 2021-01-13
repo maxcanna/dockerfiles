@@ -22,3 +22,7 @@ Available images (check the exact version on Docker Hub):
  - [minidlna](https://hub.docker.com/repository/docker/maxcanna/minidlna) (latest version on `latest` `alpine`)
 
     ![Docker Pulls](https://img.shields.io/docker/pulls/maxcanna/minidlna) ![Docker Stars](https://img.shields.io/docker/stars/maxcanna/minidlna) ![MicroBadger Layers](https://img.shields.io/microbadger/layers/maxcanna/minidlna) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/maxcanna/minidlna/latest)
+
+- [flexget](https://hub.docker.com/repository/docker/maxcanna/flexget) (latest version on `latest` `alpine`)
+
+    ![Docker Pulls](https://img.shields.io/docker/pulls/maxcanna/flexget) ![Docker Stars](https://img.shields.io/docker/stars/maxcanna/flexget) ![MicroBadger Layers](https://img.shields.io/microbadger/layers/maxcanna/flexget) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/maxcanna/flexget/latest)

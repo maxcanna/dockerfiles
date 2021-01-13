@@ -134,4 +134,30 @@ jobs:
             --tag maxcanna/minidlna:latest \
             --tag maxcanna/minidlna:$MINIDLNA_VERSION \
             --file ./minidlna/Dockerfile ./minidlna
+  flexget:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set env vars
+        run: |
+          echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Set up Docker Buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          buildx-version: latest
+      - name: Docker login
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      - name: Detect flexget version
+        run: |
+          docker build -t maxcanna/flexget:version -f ./flexget/Dockerfile ./flexget
+          echo FLEXGET_VERSION=$(docker run --rm maxcanna/flexget:version -V | head -n 1) >> $GITHUB_ENV
+      - name: Build flexget
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
+            --output "type=image,push=$DOCKER_PUSH" \
+            --tag maxcanna/flexget:latest \
+            --tag maxcanna/flexget:$FLEXGET_VERSION \
+            --file ./flexget/Dockerfile ./flexget
 
