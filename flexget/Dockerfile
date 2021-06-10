@@ -6,5 +6,7 @@ RUN pip install --upgrade pip
 RUN pip install flexget
 RUN apk del gcc g++ libc-dev linux-headers
 
-ENTRYPOINT ["flexget"]
+COPY entrypoint.sh /root/entrypoint.sh
+
+ENTRYPOINT ["/root/entrypoint.sh"]
 CMD ["-c", "/etc/issue", "-h"]
