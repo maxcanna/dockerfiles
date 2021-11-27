@@ -1,10 +1,10 @@
-FROM alpine AS build
+FROM golang:alpine AS build
 
 ARG TARGETOS
 ARG TARGETARCH
 ARG TARGETVARIANT
 
-RUN apk add --no-cache --update jq go
+RUN apk add --no-cache --update jq
 RUN wget -qO- $(wget -qO- https://api.github.com/repos/caddyserver/xcaddy/releases | jq -r '[.[].assets[] | select( .name | test(".*'${TARGETOS}'_'.?${TARGETARCH}${TARGETVARIANT}'.*gz"; "i"))][0] | .browser_download_url') | tar -xz -C /usr/bin xcaddy
 RUN xcaddy build --output /usr/bin/caddy
 
