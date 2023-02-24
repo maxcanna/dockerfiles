@@ -30,3 +30,7 @@ Available images (check the exact version on Docker Hub):
 - [openvpn](https://hub.docker.com/r/maxcanna/openvpn) (latest version on `alpine:latest`)
 
   ![Docker Pulls](https://img.shields.io/docker/pulls/maxcanna/openvpn) ![Docker Stars](https://img.shields.io/docker/stars/maxcanna/openvpn) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/maxcanna/openvpn/latest)
+
+- [cloudflared](https://hub.docker.com/r/maxcanna/cloudflared) (latest version on `alpine:latest`)
+
+  ![Docker Pulls](https://img.shields.io/docker/pulls/maxcanna/cloudflared) ![Docker Stars](https://img.shields.io/docker/stars/maxcanna/cloudflared) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/maxcanna/cloudflared/latest)
