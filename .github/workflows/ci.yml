@@ -74,7 +74,7 @@ jobs:
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
       - name: Detect caddy version
         run: |
-          docker build --build-arg TARGETOS=linux --build-arg TARGETARCH=amd64 -t maxcanna/caddy:version -f ./caddy/Dockerfile ./caddy
+          docker buildx build --load -t maxcanna/caddy:version -f ./caddy/Dockerfile ./caddy
           echo CADDY_VERSION=$(docker run --rm maxcanna/caddy:version version | cut -d ' ' -f 1) >> $GITHUB_ENV
       - name: Build caddy
         run: |
