@@ -1,4 +1,4 @@
-FROM alpine AS build
+FROM --platform=$BUILDPLATFORM alpine AS build
 
 ARG TARGETOS
 ARG TARGETARCH
