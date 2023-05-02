@@ -12,205 +12,245 @@ jobs:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Docker login
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build ffmpeg version
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:ffmpeg"
+          tags: maxcanna/ffmpeg:version
+          load: true
       - name: Detect ffmpeg version
         run: |
-          docker build -t maxcanna/ffmpeg:version -f ./ffmpeg/Dockerfile ./ffmpeg
           echo FFMPEG_VERSION=$(docker run --rm maxcanna/ffmpeg:version -version | xargs | cut -d ' ' -f 3) >> $GITHUB_ENV
       - name: Build ffmpeg
-        run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=$DOCKER_PUSH" \
-            --tag maxcanna/ffmpeg:latest \
-            --tag maxcanna/ffmpeg:$FFMPEG_VERSION \
-            --file ./ffmpeg/Dockerfile ./ffmpeg
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:ffmpeg"
+          tags: maxcanna/ffmpeg:latest,maxcanna/ffmpeg:${{ env.FFMPEG_VERSION }}
+          push: ${{ env.DOCKER_PUSH }}
+          platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
   subliminal:
     runs-on: ubuntu-latest
     steps:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Docker login
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build subliminal version
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:subliminal"
+          tags: maxcanna/subliminal:version
+          load: true
       - name: Detect subliminal version
         run: |
-          docker build -t maxcanna/subliminal:version -f ./subliminal/Dockerfile ./subliminal
           echo SUBLIMINAL_VERSION=$(docker run --rm maxcanna/subliminal:version --version | cut -d ' ' -f 3) >> $GITHUB_ENV
       - name: Build subliminal
-        run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=$DOCKER_PUSH" \
-            --tag maxcanna/subliminal:latest \
-            --tag maxcanna/subliminal:$SUBLIMINAL_VERSION \
-            --file ./subliminal/Dockerfile ./subliminal
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:subliminal"
+          tags: maxcanna/subliminal:latest,maxcanna/subliminal:${{ env.SUBLIMINAL_VERSION }}
+          push: ${{ env.DOCKER_PUSH }}
+          platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
   caddy:
     runs-on: ubuntu-latest
     steps:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Docker login
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Detect caddy version
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:caddy"
+          tags: maxcanna/caddy:version
+          load: true
+      - name: Export caddy version
         run: |
-          docker buildx build --load -t maxcanna/caddy:version -f ./caddy/Dockerfile ./caddy
           echo CADDY_VERSION=$(docker run --rm maxcanna/caddy:version version | cut -d ' ' -f 1) >> $GITHUB_ENV
       - name: Build caddy
-        run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=$DOCKER_PUSH" \
-            --tag maxcanna/caddy:latest \
-            --tag maxcanna/caddy:$CADDY_VERSION \
-            --file ./caddy/Dockerfile ./caddy
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:caddy"
+          tags: maxcanna/ffmpcaddyeg:latest,maxcanna/caddy:${{ env.CADDY_VERSION }}
+          push: ${{ env.DOCKER_PUSH }}
+          platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
   transmission:
     runs-on: ubuntu-latest
     steps:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Docker login
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build transmission version
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:transmission"
+          tags: maxcanna/transmission:version
+          load: true
       - name: Detect transmission version
         run: |
-          docker build -t maxcanna/transmission:version -f ./transmission/Dockerfile ./transmission
           echo TRANSMISSION_VERSION=$(docker run --rm maxcanna/transmission:version --version 2>&1 | xargs | cut -d ' ' -f 2) >> $GITHUB_ENV
       - name: Build transmission
-        run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=$DOCKER_PUSH" \
-            --tag maxcanna/transmission:latest \
-            --tag maxcanna/transmission:$TRANSMISSION_VERSION \
-            --file ./transmission/Dockerfile ./transmission
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:transmission"
+          tags: maxcanna/transmission:latest,maxcanna/transmission:${{ env.TRANSMISSION_VERSION }}
+          push: ${{ env.DOCKER_PUSH }}
+          platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
   minidlna:
     runs-on: ubuntu-latest
     steps:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Docker login
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build minidlna version
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:minidlna"
+          tags: maxcanna/minidlna:version
+          load: true
       - name: Detect minidlna version
         run: |
-          docker build -t maxcanna/minidlna:version -f ./minidlna/Dockerfile ./minidlna
           echo MINIDLNA_VERSION=$(docker run --rm maxcanna/minidlna:version -V | cut -d ' ' -f 2) >> $GITHUB_ENV
       - name: Build minidlna
-        run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=$DOCKER_PUSH" \
-            --tag maxcanna/minidlna:latest \
-            --tag maxcanna/minidlna:$MINIDLNA_VERSION \
-            --file ./minidlna/Dockerfile ./minidlna
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:minidlna"
+          tags: maxcanna/minidlna:latest,maxcanna/minidlna:${{ env.MINIDLNA_VERSION }}
+          push: ${{ env.DOCKER_PUSH }}
+          platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
   flexget:
     runs-on: ubuntu-latest
     steps:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Docker login
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build flexget version
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:flexget"
+          tags: maxcanna/flexget:version
+          load: true
       - name: Detect flexget version
         run: |
-          docker build -t maxcanna/flexget:version -f ./flexget/Dockerfile ./flexget
           echo FLEXGET_VERSION=$(docker run --rm maxcanna/flexget:version -V | head -n 1) >> $GITHUB_ENV
       - name: Build flexget
-        run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=$DOCKER_PUSH" \
-            --tag maxcanna/flexget:latest \
-            --tag maxcanna/flexget:$FLEXGET_VERSION \
-            --file ./flexget/Dockerfile ./flexget
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:flexget"
+          tags: maxcanna/flexget:latest,maxcanna/flexget:${{ env.FLEXGET_VERSION }}
+          push: ${{ env.DOCKER_PUSH }}
+          platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
   openvpn:
     runs-on: ubuntu-latest
     steps:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Docker login
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build openvpn version
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:openvpn"
+          tags: maxcanna/openvpn:version
+          load: true
       - name: Detect openvpn version
         run: |
-          docker build -t maxcanna/openvpn:version -f ./openvpn/Dockerfile ./openvpn
           echo OPENVPN_VERSION=$(docker run --rm --entrypoint openvpn maxcanna/openvpn:version --version | xargs | cut -d ' ' -f 2) >> $GITHUB_ENV
       - name: Build openvpn
-        run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=$DOCKER_PUSH" \
-            --tag maxcanna/openvpn:latest \
-            --tag maxcanna/openvpn:$OPENVPN_VERSION \
-            --file ./openvpn/Dockerfile ./openvpn
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:openvpn"
+          tags: maxcanna/openvpn:latest,maxcanna/openvpn:${{ env.OPENVPN_VERSION }}
+          push: ${{ env.DOCKER_PUSH }}
+          platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
   cloudflared:
     runs-on: ubuntu-latest
     steps:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Docker login
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build cloudflared version
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:cloudflared"
+          tags: maxcanna/cloudflared:version
+          load: true
       - name: Detect cloudflared version
         run: |
-          docker buildx build --load -t maxcanna/cloudflared:version -f ./cloudflared/Dockerfile ./caddy
           echo CLOUDFLARED_VERSION=$(docker run --rm maxcanna/cloudflared:version version | cut -d ' ' -f 3) >> $GITHUB_ENV
       - name: Build cloudflared
-        run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 \
-            --output "type=image,push=$DOCKER_PUSH" \
-            --tag maxcanna/cloudflared:latest \
-            --tag maxcanna/cloudflared:$CLOUDFLARED_VERSION \
-            --file ./cloudflared/Dockerfile ./cloudflared
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}:cloudflared"
+          tags: maxcanna/cloudflared:latest,maxcanna/cloudflared:${{ env.CLOUDFLARED_VERSION }}
+          push: ${{ env.DOCKER_PUSH }}
+          platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
