@@ -23,10 +23,6 @@ Available images (check the exact version on Docker Hub):
 
     ![Docker Pulls](https://img.shields.io/docker/pulls/maxcanna/minidlna) ![Docker Stars](https://img.shields.io/docker/stars/maxcanna/minidlna) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/maxcanna/minidlna/latest)
 
-- [flexget](https://hub.docker.com/r/maxcanna/flexget) (latest version on `alpine:latest`)
-
-    ![Docker Pulls](https://img.shields.io/docker/pulls/maxcanna/flexget) ![Docker Stars](https://img.shields.io/docker/stars/maxcanna/flexget) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/maxcanna/flexget/latest)
-
 - [openvpn](https://hub.docker.com/r/maxcanna/openvpn) (latest version on `alpine:latest`)
 
   ![Docker Pulls](https://img.shields.io/docker/pulls/maxcanna/openvpn) ![Docker Stars](https://img.shields.io/docker/stars/maxcanna/openvpn) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/maxcanna/openvpn/latest)
