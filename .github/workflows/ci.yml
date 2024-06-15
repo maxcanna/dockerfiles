@@ -96,7 +96,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: "{{defaultContext}}:caddy"
-          tags: maxcanna/ffmpcaddyeg:latest,maxcanna/caddy:${{ env.CADDY_VERSION }}
+          tags: maxcanna/caddy:latest,maxcanna/caddy:${{ env.CADDY_VERSION }}
           push: ${{ env.DOCKER_PUSH }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
   transmission:
