@@ -8,7 +8,7 @@ RUN wget -qO /usr/bin/cloudflared $(wget -qO- https://api.github.com/repos/cloud
 RUN chmod u+x /usr/bin/cloudflared
 
 FROM alpine
-LABEL maintainer Massimiliano Cannarozzo <massi@massi.dev>
+LABEL maintainer="Massimiliano Cannarozzo <massi@massi.dev>"
 COPY --from=build /usr/bin/cloudflared /usr/bin/cloudflared
 
 ENTRYPOINT ["cloudflared"]

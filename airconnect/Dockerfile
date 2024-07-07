@@ -11,7 +11,7 @@ RUN mv "/usr/bin/airupnp-${TARGETOS}-${TARGETARCH/amd64/x86_64}-static" /usr/bin
 RUN chmod u+x /usr/bin/aircast /usr/bin/airupnp
 
 FROM alpine
-LABEL maintainer Massimiliano Cannarozzo <massi@massi.dev>
+LABEL maintainer="Massimiliano Cannarozzo <massi@massi.dev>"
 COPY --from=build /usr/bin/aircast /usr/bin/aircast
 COPY --from=build /usr/bin/airupnp /usr/bin/airupnp
 

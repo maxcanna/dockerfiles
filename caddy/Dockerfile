@@ -8,7 +8,7 @@ RUN wget -qO- $(wget -qO- https://api.github.com/repos/caddyserver/caddy/release
 RUN chmod u+x /usr/bin/caddy
 
 FROM alpine
-LABEL maintainer Massimiliano Cannarozzo <massi@massi.dev>
+LABEL maintainer="Massimiliano Cannarozzo <massi@massi.dev>"
 COPY --from=build /usr/bin/caddy /usr/bin/caddy
 
 ENTRYPOINT ["caddy"]
