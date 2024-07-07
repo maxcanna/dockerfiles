@@ -30,3 +30,7 @@ Available images (check the exact version on Docker Hub):
 - [cloudflared](https://hub.docker.com/r/maxcanna/cloudflared) (latest version on `alpine:latest`)
 
     ![Docker Pulls](https://img.shields.io/docker/pulls/maxcanna/cloudflared) ![Docker Stars](https://img.shields.io/docker/stars/maxcanna/cloudflared) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/maxcanna/cloudflared/latest)
+
+- [airconnect](https://hub.docker.com/r/maxcanna/airconnect) (latest version on `alpine:latest`)
+
+    ![Docker Pulls](https://img.shields.io/docker/pulls/maxcanna/airconnect) ![Docker Stars](https://img.shields.io/docker/stars/maxcanna/airconnect) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/maxcanna/airconnect/latest)
