@@ -253,4 +253,4 @@ jobs:
           context: "{{defaultContext}}:airconnect"
           tags: maxcanna/airconnect:latest,maxcanna/airconnect:${{ env.AIRCONNECT_VERSION }}
           push: ${{ env.DOCKER_PUSH }}
-          platforms: linux/amd64,linux/arm/v7,linux/arm/v6
+          platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
