@@ -1,8 +1,8 @@
 FROM python:alpine
 LABEL maintainer="Massimiliano Cannarozzo <massi@massi.dev>"
 
-RUN pip install --upgrade pip
-RUN pip install subliminal
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir subliminal
 
 ENTRYPOINT ["subliminal"]
 CMD ["--help"]
