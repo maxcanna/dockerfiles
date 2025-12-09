@@ -9,7 +9,14 @@ RUN wget -qO- $(wget -qO- https://api.github.com/repos/caddyserver/caddy/release
 
 FROM alpine
 LABEL maintainer="Massimiliano Cannarozzo <massi@massi.dev>"
+
+ARG PUID=1000
+ARG PGID=1000
+RUN addgroup -S -g ${PGID} app && adduser -S -u ${PUID} -G app app
+
 COPY --from=build /usr/bin/caddy /usr/bin/caddy
+
+USER app
 
 ENTRYPOINT ["caddy"]
 CMD ["help"]

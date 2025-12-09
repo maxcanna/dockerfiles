@@ -16,8 +16,15 @@ RUN wget -qO airconnect.zip $(wget -qO- https://api.github.com/repos/philippe44/
 
 FROM alpine
 LABEL maintainer="Massimiliano Cannarozzo <massi@massi.dev>"
+
+ARG PUID=1000
+ARG PGID=1000
+RUN addgroup -S -g ${PGID} app && adduser -S -u ${PUID} -G app app
+
 COPY --from=build /usr/bin/aircast /usr/bin/aircast
 COPY --from=build /usr/bin/airupnp /usr/bin/airupnp
+
+USER app
 
 ENTRYPOINT ["aircast"]
 CMD ["-h"]
