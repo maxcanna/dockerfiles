@@ -10,6 +10,8 @@ RUN wget -qO /usr/bin/cloudflared $(wget -qO- https://api.github.com/repos/cloud
 FROM alpine
 LABEL maintainer="Massimiliano Cannarozzo <massi@massi.dev>"
 
+ENV NO_AUTOUPDATE=true
+
 ARG PUID=1000
 ARG PGID=1000
 RUN addgroup -S -g ${PGID} app && adduser -S -u ${PUID} -G app app
