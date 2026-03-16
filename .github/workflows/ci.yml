@@ -13,7 +13,6 @@ jobs:
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
           echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
-          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -42,7 +41,7 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
           build-args: |
             BUILD_DATE=${{ env.BUILD_DATE }}
-            REVISION=${{ env.REVISION }}
+            REVISION=${{ github.sha }}
             VERSION=${{ env.FFMPEG_VERSION }}
             ALPINE_VERSION=${{ env.ALPINE_VERSION }}
   subliminal:
@@ -52,7 +51,6 @@ jobs:
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
           echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
-          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -81,7 +79,7 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
           build-args: |
             BUILD_DATE=${{ env.BUILD_DATE }}
-            REVISION=${{ env.REVISION }}
+            REVISION=${{ github.sha }}
             VERSION=${{ env.SUBLIMINAL_VERSION }}
             ALPINE_VERSION=${{ env.ALPINE_VERSION }}
   caddy:
@@ -91,7 +89,6 @@ jobs:
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
           echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
-          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -120,7 +117,7 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
           build-args: |
             BUILD_DATE=${{ env.BUILD_DATE }}
-            REVISION=${{ env.REVISION }}
+            REVISION=${{ github.sha }}
             VERSION=${{ env.CADDY_VERSION }}
             ALPINE_VERSION=${{ env.ALPINE_VERSION }}
   transmission:
@@ -130,7 +127,6 @@ jobs:
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
           echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
-          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -159,7 +155,7 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
           build-args: |
             BUILD_DATE=${{ env.BUILD_DATE }}
-            REVISION=${{ env.REVISION }}
+            REVISION=${{ github.sha }}
             VERSION=${{ env.TRANSMISSION_VERSION }}
             ALPINE_VERSION=${{ env.ALPINE_VERSION }}
   minidlna:
@@ -169,7 +165,6 @@ jobs:
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
           echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
-          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -198,7 +193,7 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
           build-args: |
             BUILD_DATE=${{ env.BUILD_DATE }}
-            REVISION=${{ env.REVISION }}
+            REVISION=${{ github.sha }}
             VERSION=${{ env.MINIDLNA_VERSION }}
             ALPINE_VERSION=${{ env.ALPINE_VERSION }}
   openvpn:
@@ -208,7 +203,6 @@ jobs:
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
           echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
-          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -237,7 +231,7 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
           build-args: |
             BUILD_DATE=${{ env.BUILD_DATE }}
-            REVISION=${{ env.REVISION }}
+            REVISION=${{ github.sha }}
             VERSION=${{ env.OPENVPN_VERSION }}
             ALPINE_VERSION=${{ env.ALPINE_VERSION }}
   cloudflared:
@@ -247,7 +241,6 @@ jobs:
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
           echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
-          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -276,7 +269,7 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
           build-args: |
             BUILD_DATE=${{ env.BUILD_DATE }}
-            REVISION=${{ env.REVISION }}
+            REVISION=${{ github.sha }}
             VERSION=${{ env.CLOUDFLARED_VERSION }}
             ALPINE_VERSION=${{ env.ALPINE_VERSION }}
   airconnect:
@@ -286,7 +279,6 @@ jobs:
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
           echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
-          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -315,6 +307,6 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
           build-args: |
             BUILD_DATE=${{ env.BUILD_DATE }}
-            REVISION=${{ env.REVISION }}
+            REVISION=${{ github.sha }}
             VERSION=${{ env.AIRCONNECT_VERSION }}
             ALPINE_VERSION=${{ env.ALPINE_VERSION }}
