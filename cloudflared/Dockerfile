@@ -8,7 +8,23 @@ RUN wget -qO /usr/bin/cloudflared $(wget -qO- https://api.github.com/repos/cloud
     && chmod u+x /usr/bin/cloudflared
 
 FROM alpine
-LABEL maintainer="Massimiliano Cannarozzo <massi@massi.dev>"
+
+ARG BUILD_DATE
+ARG REVISION
+ARG VERSION
+ARG ALPINE_VERSION
+
+LABEL org.opencontainers.image.created=$BUILD_DATE \
+      org.opencontainers.image.authors="Massimiliano Cannarozzo <massi@massi.dev>" \
+      org.opencontainers.image.url="https://github.com/maxcanna/dockerfiles" \
+      org.opencontainers.image.documentation="https://github.com/maxcanna/dockerfiles/blob/master/README.md" \
+      org.opencontainers.image.source="https://github.com/maxcanna/dockerfiles" \
+      org.opencontainers.image.version=$VERSION \
+      org.opencontainers.image.revision=$REVISION \
+      org.opencontainers.image.vendor="Massimiliano Cannarozzo" \
+      org.opencontainers.image.licenses="GPL-3.0-only" \
+      org.opencontainers.image.title="cloudflared" \
+      org.opencontainers.image.description="cloudflared ($VERSION on alpine:$ALPINE_VERSION)"
 
 ENV NO_AUTOUPDATE=true
 
