@@ -12,6 +12,8 @@ jobs:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
+          echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
+          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -37,12 +39,18 @@ jobs:
           tags: maxcanna/ffmpeg:latest,maxcanna/ffmpeg:${{ env.FFMPEG_VERSION }}
           push: ${{ env.DOCKER_PUSH }}
           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
+          build-args: |
+            BUILD_DATE=${{ env.BUILD_DATE }}
+            REVISION=${{ env.REVISION }}
+            VERSION=${{ env.FFMPEG_VERSION }}
   subliminal:
     runs-on: ubuntu-latest
     steps:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
+          echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
+          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -68,12 +76,18 @@ jobs:
           tags: maxcanna/subliminal:latest,maxcanna/subliminal:${{ env.SUBLIMINAL_VERSION }}
           push: ${{ env.DOCKER_PUSH }}
           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
+          build-args: |
+            BUILD_DATE=${{ env.BUILD_DATE }}
+            REVISION=${{ env.REVISION }}
+            VERSION=${{ env.SUBLIMINAL_VERSION }}
   caddy:
     runs-on: ubuntu-latest
     steps:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
+          echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
+          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -99,12 +113,18 @@ jobs:
           tags: maxcanna/caddy:latest,maxcanna/caddy:${{ env.CADDY_VERSION }}
           push: ${{ env.DOCKER_PUSH }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
+          build-args: |
+            BUILD_DATE=${{ env.BUILD_DATE }}
+            REVISION=${{ env.REVISION }}
+            VERSION=${{ env.CADDY_VERSION }}
   transmission:
     runs-on: ubuntu-latest
     steps:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
+          echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
+          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -130,12 +150,18 @@ jobs:
           tags: maxcanna/transmission:latest,maxcanna/transmission:${{ env.TRANSMISSION_VERSION }}
           push: ${{ env.DOCKER_PUSH }}
           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
+          build-args: |
+            BUILD_DATE=${{ env.BUILD_DATE }}
+            REVISION=${{ env.REVISION }}
+            VERSION=${{ env.TRANSMISSION_VERSION }}
   minidlna:
     runs-on: ubuntu-latest
     steps:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
+          echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
+          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -161,12 +187,18 @@ jobs:
           tags: maxcanna/minidlna:latest,maxcanna/minidlna:${{ env.MINIDLNA_VERSION }}
           push: ${{ env.DOCKER_PUSH }}
           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
+          build-args: |
+            BUILD_DATE=${{ env.BUILD_DATE }}
+            REVISION=${{ env.REVISION }}
+            VERSION=${{ env.MINIDLNA_VERSION }}
   openvpn:
     runs-on: ubuntu-latest
     steps:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
+          echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
+          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -192,12 +224,18 @@ jobs:
           tags: maxcanna/openvpn:latest,maxcanna/openvpn:${{ env.OPENVPN_VERSION }}
           push: ${{ env.DOCKER_PUSH }}
           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
+          build-args: |
+            BUILD_DATE=${{ env.BUILD_DATE }}
+            REVISION=${{ env.REVISION }}
+            VERSION=${{ env.OPENVPN_VERSION }}
   cloudflared:
     runs-on: ubuntu-latest
     steps:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
+          echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
+          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -223,12 +261,18 @@ jobs:
           tags: maxcanna/cloudflared:latest,maxcanna/cloudflared:${{ env.CLOUDFLARED_VERSION }}
           push: ${{ env.DOCKER_PUSH }}
           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
+          build-args: |
+            BUILD_DATE=${{ env.BUILD_DATE }}
+            REVISION=${{ env.REVISION }}
+            VERSION=${{ env.CLOUDFLARED_VERSION }}
   airconnect:
     runs-on: ubuntu-latest
     steps:
       - name: Set env vars
         run: |
           echo DOCKER_PUSH=$([[ $GITHUB_REF == *"master"* ]] && echo "true" || echo "false") >> $GITHUB_ENV
+          echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') >> $GITHUB_ENV
+          echo REVISION=$(git rev-parse HEAD) >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -254,3 +298,7 @@ jobs:
           tags: maxcanna/airconnect:latest,maxcanna/airconnect:${{ env.AIRCONNECT_VERSION }}
           push: ${{ env.DOCKER_PUSH }}
           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
+          build-args: |
+            BUILD_DATE=${{ env.BUILD_DATE }}
+            REVISION=${{ env.REVISION }}
+            VERSION=${{ env.AIRCONNECT_VERSION }}
