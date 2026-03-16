@@ -32,6 +32,7 @@ jobs:
       - name: Detect ffmpeg version
         run: |
           echo FFMPEG_VERSION=$(docker run --rm maxcanna/ffmpeg:version -version | xargs | cut -d ' ' -f 3) >> $GITHUB_ENV
+          echo ALPINE_VERSION=$(docker run --rm --entrypoint cat maxcanna/ffmpeg:version /etc/alpine-release) >> $GITHUB_ENV
       - name: Build ffmpeg
         uses: docker/build-push-action@v4
         with:
@@ -43,6 +44,7 @@ jobs:
             BUILD_DATE=${{ env.BUILD_DATE }}
             REVISION=${{ env.REVISION }}
             VERSION=${{ env.FFMPEG_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}
   subliminal:
     runs-on: ubuntu-latest
     steps:
@@ -69,6 +71,7 @@ jobs:
       - name: Detect subliminal version
         run: |
           echo SUBLIMINAL_VERSION=$(docker run --rm maxcanna/subliminal:version --version | cut -d ' ' -f 3) >> $GITHUB_ENV
+          echo ALPINE_VERSION=$(docker run --rm --entrypoint cat maxcanna/subliminal:version /etc/alpine-release) >> $GITHUB_ENV
       - name: Build subliminal
         uses: docker/build-push-action@v4
         with:
@@ -80,6 +83,7 @@ jobs:
             BUILD_DATE=${{ env.BUILD_DATE }}
             REVISION=${{ env.REVISION }}
             VERSION=${{ env.SUBLIMINAL_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}
   caddy:
     runs-on: ubuntu-latest
     steps:
@@ -106,6 +110,7 @@ jobs:
       - name: Export caddy version
         run: |
           echo CADDY_VERSION=$(docker run --rm maxcanna/caddy:version version | cut -d ' ' -f 1) >> $GITHUB_ENV
+          echo ALPINE_VERSION=$(docker run --rm --entrypoint cat maxcanna/caddy:version /etc/alpine-release) >> $GITHUB_ENV
       - name: Build caddy
         uses: docker/build-push-action@v4
         with:
@@ -117,6 +122,7 @@ jobs:
             BUILD_DATE=${{ env.BUILD_DATE }}
             REVISION=${{ env.REVISION }}
             VERSION=${{ env.CADDY_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}
   transmission:
     runs-on: ubuntu-latest
     steps:
@@ -143,6 +149,7 @@ jobs:
       - name: Detect transmission version
         run: |
           echo TRANSMISSION_VERSION=$(docker run --rm maxcanna/transmission:version --version 2>&1 | xargs | cut -d ' ' -f 2) >> $GITHUB_ENV
+          echo ALPINE_VERSION=$(docker run --rm --entrypoint cat maxcanna/transmission:version /etc/alpine-release) >> $GITHUB_ENV
       - name: Build transmission
         uses: docker/build-push-action@v4
         with:
@@ -154,6 +161,7 @@ jobs:
             BUILD_DATE=${{ env.BUILD_DATE }}
             REVISION=${{ env.REVISION }}
             VERSION=${{ env.TRANSMISSION_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}
   minidlna:
     runs-on: ubuntu-latest
     steps:
@@ -180,6 +188,7 @@ jobs:
       - name: Detect minidlna version
         run: |
           echo MINIDLNA_VERSION=$(docker run --rm maxcanna/minidlna:version -V | cut -d ' ' -f 2) >> $GITHUB_ENV
+          echo ALPINE_VERSION=$(docker run --rm --entrypoint cat maxcanna/minidlna:version /etc/alpine-release) >> $GITHUB_ENV
       - name: Build minidlna
         uses: docker/build-push-action@v4
         with:
@@ -191,6 +200,7 @@ jobs:
             BUILD_DATE=${{ env.BUILD_DATE }}
             REVISION=${{ env.REVISION }}
             VERSION=${{ env.MINIDLNA_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}
   openvpn:
     runs-on: ubuntu-latest
     steps:
@@ -217,6 +227,7 @@ jobs:
       - name: Detect openvpn version
         run: |
           echo OPENVPN_VERSION=$(docker run --rm --entrypoint openvpn maxcanna/openvpn:version --version | xargs | cut -d ' ' -f 2) >> $GITHUB_ENV
+          echo ALPINE_VERSION=$(docker run --rm --entrypoint cat maxcanna/openvpn:version /etc/alpine-release) >> $GITHUB_ENV
       - name: Build openvpn
         uses: docker/build-push-action@v4
         with:
@@ -228,6 +239,7 @@ jobs:
             BUILD_DATE=${{ env.BUILD_DATE }}
             REVISION=${{ env.REVISION }}
             VERSION=${{ env.OPENVPN_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}
   cloudflared:
     runs-on: ubuntu-latest
     steps:
@@ -254,6 +266,7 @@ jobs:
       - name: Detect cloudflared version
         run: |
           echo CLOUDFLARED_VERSION=$(docker run --rm maxcanna/cloudflared:version version | cut -d ' ' -f 3) >> $GITHUB_ENV
+          echo ALPINE_VERSION=$(docker run --rm --entrypoint cat maxcanna/cloudflared:version /etc/alpine-release) >> $GITHUB_ENV
       - name: Build cloudflared
         uses: docker/build-push-action@v4
         with:
@@ -265,6 +278,7 @@ jobs:
             BUILD_DATE=${{ env.BUILD_DATE }}
             REVISION=${{ env.REVISION }}
             VERSION=${{ env.CLOUDFLARED_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}
   airconnect:
     runs-on: ubuntu-latest
     steps:
@@ -291,6 +305,7 @@ jobs:
       - name: Detect airconnect version
         run: |
           echo AIRCONNECT_VERSION=$(docker run --rm maxcanna/airconnect:version | xargs | cut -d ' ' -f 1) >> $GITHUB_ENV
+          echo ALPINE_VERSION=$(docker run --rm --entrypoint cat maxcanna/airconnect:version /etc/alpine-release) >> $GITHUB_ENV
       - name: Build airconnect
         uses: docker/build-push-action@v4
         with:
@@ -302,3 +317,4 @@ jobs:
             BUILD_DATE=${{ env.BUILD_DATE }}
             REVISION=${{ env.REVISION }}
             VERSION=${{ env.AIRCONNECT_VERSION }}
+            ALPINE_VERSION=${{ env.ALPINE_VERSION }}

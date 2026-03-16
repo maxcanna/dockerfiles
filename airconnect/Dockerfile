@@ -19,6 +19,7 @@ FROM alpine
 ARG BUILD_DATE
 ARG REVISION
 ARG VERSION
+ARG ALPINE_VERSION
 
 LABEL org.opencontainers.image.created=$BUILD_DATE \
       org.opencontainers.image.authors="Massimiliano Cannarozzo <massi@massi.dev>" \
@@ -30,7 +31,7 @@ LABEL org.opencontainers.image.created=$BUILD_DATE \
       org.opencontainers.image.vendor="Massimiliano Cannarozzo" \
       org.opencontainers.image.licenses="GPL-3.0-only" \
       org.opencontainers.image.title="airconnect" \
-      org.opencontainers.image.description="airconnect (latest version on alpine:latest)"
+      org.opencontainers.image.description="airconnect ($VERSION on alpine:$ALPINE_VERSION)"
 
 ARG PUID=1000
 ARG PGID=1000
